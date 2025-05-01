@@ -93,6 +93,31 @@ const Link1 = () => {
     setSelectedPosition(null);
   };
 
+  const handleSubmit2 = async (e) => {
+    e.preventDefault();
+
+    const requestData = {
+      dept,
+      positions,
+      filterType,
+      fromDate: filterType === "specific" ? fromDate : null,
+      toDate: filterType === "specific" ? toDate : null,
+    };
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/filter-employees",
+        requestData
+      );
+      const data = response.data;
+      setFilteredData(data);
+      setSelectedPosition(null);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      // Optional: show an error message to user
+    }
+  };
+
   const columns = [
     { name: "ID", selector: (row) => row.id },
     { name: "Name", selector: (row) => row.name },
@@ -223,3 +248,5 @@ const App = () => {
 };
 
 export default App;
+
+import axios from "axios";
